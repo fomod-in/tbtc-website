@@ -52,22 +52,22 @@ Il sistema accetta solo la prima UTXO maggiore della dimensione del lotto. Tutti
 
 ## Random Beacon per la selezione dei signers
 
-The Keep network requires a trusted source of randomness to select tBTC signers. This takes the form of a BLS Threshold Relay.
+Il Keep Network si basa su un meccanismo certificato di selezione casuale del signers in tBTC. Questo meccanismo prende il nome di "BLS Threshold Relay".
 
-When a request comes in to create a signing group, the tBTC system uses a random seed from a secure decentralized random beacon to randomly select signing group members from the eligible pool of signers. These signers coordinate a distributed key generation protocol that results in a public ECDSA key for the group, which is used to produce a wallet address that is then published to the host chain. This completes the signer selection phase.
+Quando arriva una richiesta di creazione di gruppo di signers, il sistema tBTC usa un seed casuale e decentralizzato per identificare il gruppo all'interno di una lista di candidati. Questi signers coordinano un protocollo di generazione di chiavi distribuite che producono una chiave ECDSA pubblica per lo stesso gruppo, usata per generare un wallet address che poi viene pubblicato sulla blockchain. Questo completa la fase di selezione randomica dei signers.
 
 ## Threshold Signatures
 
-tBTC uses threshold signatures for key generation. Threshold signatures allow for a group of signers to generate a single public key from a set of private key &quot;shares.&quot; This method enables a subset of the signers to create signatures on behalf of the larger group. Users can verify groups of signers through a single public key corresponding to multiple private keys. This provides security without the work requirements of standard multisig designs.
+tBTC usa le threshold signatures per la generazione di chiavi. La Threshold signatures consente per ogni gruppo di signers, di generare una singola chiave pubblica da un set di chiavi private. Questo metodo abilita un sottogruppo di signers a creare una nuova firma per conto di un gruppo di signers più grande. Gli utenti possono verificare i gruppi di signers attraverso un unica chiave pubblica che corrisponde a molteplici chiavi private. Questo fornisce la sicurezza senza il bisogno di ricorrere allo standard multisig.
 
-Threshold signatures provide a number of benefits:
+Threshold signatures benefits:
 
-* Relatively little coordination is needed to set up a group
-* No single member of the group has to be trusted
-* They are resilient to as much as half of the group being malicious or failing to generate
+* Coordinazione semplice per costituire un gruppo di signers
+* Non richiesto il trust su singoli membri del gruppo 
+* Resilienza a comportamenti malevoli
 
-For tBTC v1, signing groups are 3-of-3, meaning they are groups of 3 signers that require all 3 signers to collaborate to create signatures on behalf of the group.
+Nella v1 di tBTC v1, i gruppi di signers sono 3-di-3, e ciò significa che bastano 3 signers in coordinazione per generare firme per nome e conto di un gruppo di signers più ampio.
 
-You can find additional information about threshold signatures [here](https://blog.keep.network/threshold-signatures-ff2c2b98d9c7).
+Puoi trovare maggiori informazioni [qui](https://blog.keep.network/threshold-signatures-ff2c2b98d9c7).
 
-Visit our [GitHub](https://github.com/keep-network/tbtc) for more information, tools, and documentation. [Join the tBTC mailing list](https://tbtc.network/#mailing-list) for updates, including information about tBTC&#39;s upcoming launch on Ethereum mainnet. To learn more about tBTC&#39;s technical design, read the [technical spec](http://docs.keep.network/tbtc/index.pdf). Join the [Keep #tbtc channel on Discord](https://chat.tbtc.network) for technical questions about tBTC and [tbtc.js](https://tbtc.network/news/2020-02-14-announcing-tbtc-js), and follow [along on Twitter](https://twitter.com/search?q=%22%23tbtc%22&src=typed_query) news and opportunities to participate.
+Visita il nostro [GitHub](https://github.com/keep-network/tbtc) per altri documenti, tools e informazioni. Entra nella [tBTC mailing list](https://tbtc.network/#mailing-list) per aggiornamenti, inclusi altri dettagli su tBTC e sulla rete Ethereum. Per risorse addizionali, leggi il [documento tecnico](http://docs.keep.network/tbtc/index.pdf). Entra nel [canale #tbtc su Discord](https://chat.tbtc.network) per discussioni tecniche su tBTC e [tbtc.js](https://tbtc.network/news/2020-02-14-announcing-tbtc-js), e seguici su [Twitter](https://twitter.com/search?q=%22%23tbtc%22&src=typed_query) per ulteriori opportunità.
