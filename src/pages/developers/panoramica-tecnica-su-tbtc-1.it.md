@@ -19,40 +19,38 @@ I depositi di TBTC possono essere bloccati o sbloccati. Un deposito bloccato pu�
 
 Una volta che il deposito è pienamente concluso attraverso la prova data dal trasferimento effettivo dei BTC, l'holder può richiederne il riscatto, e, dopo aver pagato una commissione di firma al signer, è assicurato sulla medesima UTXO che ha utilizzato per il deposito sulla rete Bitcoin.
 
-Il TDT e il TBTC are interchangeable through a contract called the vending machine, which manages the exchange of TDT for TBTC and vice-versa.
+Il TDT e il TBTC sono interscambiabili attraverso uno smart contract chiamato "il distributore" (the vending machine), che controlla gli scambi fra TDT e TBTC e viceversa.
 
-* Given a TDT, it will mint TBTC.
-* Given TBTC, it will burn it and return a specific TDT.
+* Dato un TDT, sarà minato un TBTC.
+* Dato un TBTC, potrà essere burnato e restituire uno specifico TDT.
 
-*The TDT is required to redeem a locked BTC deposit*. Think of it like the ticket from a strict coat check: without it, you can&#39;t get your BTC back.
+*Un TDT è necessario per riscattare un deposito bloccato di BTC*. Consideralo come fosse lo scontrino fiscale di una merce che puoi rendere al venditore; senza di esso, non puoi ottenere il reso ne la garanzia.
 
-TDTs are transferable. Holders may choose to trade them, for example, or use them as collateral elsewhere.
+I TDT sono trasferibili. I detentori possono anche scegliere di venderli o di utilizzarli a collaterale su altre applicazioni.
 
-In the event of fraud or collateralization issues, the holder of a TDT is guaranteed compensation in TBTC via the signing group&#39;s bonded collateral. If the deposit is redeemed by another account after it has reached term, then the TDT holder is guaranteed compensation in TBTC (less signer fees). Note a TDT holder can still redeem their deposit for BTC even once the 6 month term has elapsed, if no other users have redeemed it.
+In caso di evento fraudolento o problemi di collateralizzazione, il possessore di TDT è sempre garantito grazie al collaterale del gruppo di signers. Se il deposito viene riscattato da un altro utente, il TDT holder viene invece garantito direttamente attraverso il TBTC (pagando una commissione minore). Considera che un TDT holder può sempre riscattare il suo deposito BTC anche dopo la scadenza dei 6 mesi, se nessun altro utente ha già provveduto a riscattarli.
 
-Since there is more value in stealing a 1 BTC deposit than a 0.001 BTC deposit, the former is likely more susceptible to attacks like re-orgs. As an NFT, TDTs allow this risk to be priced in, which is highly relevant for applications that use BTC as collateral. Any recipient of a TDT will need to evaluate the risk profile of a given token themselves. TDTs are designed to provide a net benefit by isolating risk, since attacks against the deposit backing a TDT should only impact the TDT holder, rather than the entire supply-pegged currency.
+Dato che c'è più convenienza a rubare 1 BTC depositato piuttosto che 0.001 BTC, si è molto più suscettibili a attacchi come quelli di tipo re-orgs. Come token non fungibile, TDT consente che tale rischio sia prezzato, e ciò è una questione rilevante per le applicazioni che usano BTC come collaterale. Ogni detentore di TDT necessita di valutare il profilo di rischio di un determinato token. TDT è progettato per fornire una mitigazione del rischio, dato che gli attackers dei depositi garantiti da TDT impattano solo ed esclusivamente il possessore di TDT, e non tutta la catena blockchain a garanzia (BTC).
 
-## Lots and Lot Sizes
+## Lotti e dimensioni
 
-Deposits on tBTC are managed in lots. To make the system rational and manageable, lots are one of a set of fixed sizes, managed by the system. If a depositor wants to deposit a larger amount of BTC than supported by existing lot sizes, they must create multiple deposit requests and fund multiple deposits. This allows for each deposit to be backed by a different signing group, which both simplifies the bonding of signing groups and insulates the wider system against isolated signing group failures, malicious or otherwise.
+I depositi in TBTC sono gestiti in lotti. Per rendere il sistema razionale e sostenibile, i lotti rappresentano un set di una dimensione fissa, gestiti dal sistema. Se un utente vuole depositare un ampio numero di BTC che supera la dimensione dei lotti concessi, deve inoltrare molteplici richieste di deposito. Questo consente a ogni deposito di essere garantito da diversi gruppi di signers, e ciò permette non solo una più efficiente collateralizzazione ma anche la mitigazione del rischio di problemi legati ai gruppi di signers, comportamenti malevoli o altri fallimenti. Questa architettura ha importanti implicazioni a cui gli utenti devono prestare attenzione.
 
-This design has important implications that users should be familiar with.
+*Ogni deposito deve rispettare un lotto di dimensione fissa*
 
-*Each deposit must match one of the standard lot sizes*
+Il sistema etichetta le richieste sovradimensionate o sottodimensionate -- nelle quali l'utente inoltra richieste di deposito superiore o inferiore alla dimensione fissa del lotto -- come un errore. Queste richieste distorgono la logica di collateralizzazione progettata per i signers, quindi il sistema trasferisce i costi di queste richieste sull'utente finale.
 
-The system handles all instances of overpayment and underpayment -- in which a user deposits an amount that is either larger or smaller than the standard deposit size -- as faulty user behavior. The primary effect of over- or underpayment on the system is to distort the collateralization of the signers. The system is designed to pass the costs of this on to the user.
+In caso di deposito sottodimensionato, il sistema non crea una "proof" necessaria al riscatto dei TBTC. L'utente quindi rinuncia a bloccare i BTC in un deposito che può essere suddiviso fra diversi signers.
 
-In the case of underpayment -- in which a user deposits an amount less than the chosen BTC lot size -- the system will not create a proof that can be redeemed for TBTC. The user forfeits the BTC locked into the deposit, which can be divided among the signers.
+*L'utente deve tenere a mente questa fattispecie. In una situazione in cui l'unico lotto disponibile è ad esempio di 1 BTC, è semplice immaginare che l'utente possa provare a richiedere 1 TBTC attraverso 2 depositi da 0,5 BTC. In tal caso, l'utente perde i suoi BTC in quanto il sistema semplicemente riconosce 2 richieste di deposito sottodimensionate rispetto al lotto standard disponibile (1 BTC). Pertanto, il lotto ha una dimensione fissa e quel lotto deve essere riempito con quello stesso identico ammontare.*
 
-*Users should be acutely aware of this. In a situation where the only available lot size is 1 BTC, for example, it is easy to imagine a user attempting to claim 1 TBTC by making two deposits of 0.5 BTC each. A user that does so will lose all of their BTC, as the system will simply recognize two distinct instances of underpayment. In short, the lot size of a deposit is fixed when the deposit is created, and the deposit must be funded with that amount.*
+In caso di deposito sovradimensionato, il sistema genera una "proof" necessaria al riscatto, ma solo pari all'ammontare del lotto disponibile. In un mercato pareto-efficiente, ci si aspetta che tale deposito venga immediatamente riscattato per opportunità di arbitraggio. Finchè il deposito non viene riscattato per il suo ammontare, l'utente perde la quota in eccesso (sovradimensionata) rispetto al lotto disponibile.
 
-In the case of overpayment -- where a user deposits more than the chosen BTC lot size -- the system will generate a proof, but only for the standard lot size, redeemable in exchange for that amount in TBTC. In an efficient market, we would expect this to be immediately redeemed, as the redeemer expects to take the overfunded amount locked in the deposit as arbitrage. Unless the deposit is redeemed by the original depositor, the overpayment is forfeit.
+*Ad esempio, se è disponibile un lotto da 1 BTC e un utente deposita 1,4 BTC, riceverà una "proof" atta a consentirgi il riscatto di 1 solo BTC (pari alla dimensione del lotto). In quel momento però viene a crearsi un deposito sovradimensionato nel sistema, che si presterebbe ad un opportunità di arbitraggio per i detentori di 1 TBTC (che riscatterebbero 1,4 BTC). A quel punto, l'utente vedrebbe persi gli extra 0,4 BTC.*
 
-*In a 1 BTC lot size example, a user who deposits 1.4 BTC will receive a proof allowing them to mint exactly 1 TBTC (the amount corresponding to the lot size). There is now an oversize deposit in the system, which one would expect to be redeemed quickly given the opportunity to exchange 1 TBTC for 1.4 BTC. The user who deposited the extra BTC will, like all other users, be able to redeem their 1 TBTC for 1 BTC, but the extra 0.4 BTC is lost (unless the user realizes their mistake and quickly redeems their TBTC for the original 1.4 BTC deposit).*
+Il sistema accetta solo la prima UTXO maggiore della dimensione del lotto. Tutti gli altri BTC inviati sono da considerarsi persi. Quindi è imperativo per l'utente utilizzare una singola UTXO. Accettare UTXO multipli da parte degli utenti imporrebbe un aumento della complessità e del gas cost in quanto ogni UTXO genera una ed una sola firma. I signers si vedrebbero costretti a firmare ogni transazione anche se non riescono a riconoscere a quanto ammonta il totale delle UTXO.
 
-The system will only accept the first UTXO greater than the deposit lot size. All other BTC sent to the signing group is forfeit. Therefore it is imperative that depositors send only a single UTXO. Accepting multiple UTXOs from depositors would impose significant on-chain complexity and gas fees, as each UTXO would need to be proven via SPV, and a signature on it explicitly authorized. Signers would have to be incentivized to sign each transaction despite the fact that the total value of the UTXOs is not known.
-
-## Random Beacon for Signer Selection
+## Random Beacon per la selezione dei signers
 
 The Keep network requires a trusted source of randomness to select tBTC signers. This takes the form of a BLS Threshold Relay.
 
