@@ -54,7 +54,7 @@ L'errore viene identificato mediante il messaggio “Tx sends value to wrong pub
 
 ```
 
-Bitcoin has multiple types of output scripts. Standard output types are pay to pubkeyhash (p2pkh), pay to scripthash (p2sh), pay to witness pubkeyhash (p2wpkh), and pay to witness scripthash (p2wsh). The address represents a 20- or 32-byte hash, a checksum, and information about the type of output script. The type information is used to insert the hash into a standard template. This creates the corresponding output script:
+Bitcoin ha diverse tipologie di scripts di output. Gli standard di output sono "pay to pubkeyhash" (p2pkh), "pay to scripthash" (p2sh), "pay to witness pubkeyhash" (p2wpkh) e "pay to witness scripthash" (p2wsh). L'indirizzo è costituito da un hash a 20 o 32 byte, da un checksum e da informazioni relative al tipo di output script. Queste ultime sono usate per inserire l'hash in uno schema standard. Questo crea il corrispondente script di output:
 
 | Standard Type | Prefix | Hash | Postfix | Total length |
 | ------------- | ------ | ---- | ------- | ------------ |
@@ -63,7 +63,7 @@ Bitcoin has multiple types of output scripts. Standard output types are pay to p
 | p2wpkh        | 2      | 20   | \-      | 22           |
 | p2wsh         | 2      | 32   | \-      | 34           |
 
-Output scripts vary in length. As a result all output scripts are prefixed with 1 byte that encodes the length of the script in bytes. The value of an output is represented as an 8-byte little-endian integer, serialized immediately before the output script. A standard output is between (8 + 1 + 22 =) 31 and (8 + 1 + 34 =) 43 bytes long.
+Gli script di aoutput presentanto diverse lunghezze. Output scripts vary in length. As a result all output scripts are prefixed with 1 byte that encodes the length of the script in bytes. The value of an output is represented as an 8-byte little-endian integer, serialized immediately before the output script. A standard output is between (8 + 1 + 22 =) 31 and (8 + 1 + 34 =) 43 bytes long.
 
 `BTCUtils.extractHash()`extracts the hash from a standard output. It does this by inspecting the output script prefix and suffix to determine the location of the hash. If the output script is non-standard, it returns an empty byte array.
 
